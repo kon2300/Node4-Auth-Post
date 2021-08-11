@@ -2,6 +2,6 @@ const express = require('express')
 const router = express.Router()
 
 router.use('/auth', require('./authRoutes'))
-router.use('/post', require('./postRoutes'))
+router.use('/articles', require('./articlesRoutes'))
 
 module.exports = router

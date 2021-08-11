@@ -16,7 +16,7 @@ module.exports = {
       })
   },
   editArticle: async (req, res) => {
-    await Article.findByPk(req.body.article_id)
+    await Article.findByPk(req.params.articleId)
       .then((article) => {
         res.json({ article })
       })
@@ -27,7 +27,7 @@ module.exports = {
   updateArticle: async (req, res) => {
     await Article.update(
       { title: req.body.title, content: req.body.content },
-      { where: { id: req.body.article_id } }
+      { where: { id: req.params.articleId } }
     )
       .then((article) => {
         res.json({ article })
@@ -55,7 +55,7 @@ module.exports = {
       })
   },
   removeArticle: async (req, res) => {
-    await Article.destroy({ where: { id: req.body.article_id } })
+    await Article.destroy({ where: { id: req.params.articleId } })
       .then((article) => {
         res.json({ success: article })
       })

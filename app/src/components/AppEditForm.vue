@@ -66,7 +66,7 @@ export default {
   setup() {
     const store = useStore()
     onMounted(() => {
-      const articleId = store.state.post['originalArticle'].articleId
+      const articleId = store.state.articles['originalArticle'].articleId
       store.dispatch('editArticle', articleId)
     })
 
@@ -82,8 +82,8 @@ export default {
     const { handleChange: contentHandle } = useField('content')
 
     return {
-      title: computed(() => store.state.post['originalArticle'].title),
-      content: computed(() => store.state.post['originalArticle'].content),
+      title: computed(() => store.state.articles['originalArticle'].title),
+      content: computed(() => store.state.articles['originalArticle'].content),
       errors,
       isSubmitting,
       titleHandle,
