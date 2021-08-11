@@ -105,7 +105,7 @@ export default {
     })
 
     return {
-      allArticle: computed(() => store.state.auth['allArticle']),
+      allArticle: computed(() => store.state.post['allArticle']),
       user: computed(() => store.getters['authenticated']),
       postedEdit: (articleId) => {
         store.commit('SET_ORIGINAL_ARTICLE', { articleId })
