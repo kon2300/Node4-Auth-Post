@@ -66,25 +66,24 @@ export default {
   setup() {
     const store = useStore()
     onMounted(() => {
-      const articleId = store.state.auth['originalArticle'].articleId
+      const articleId = store.state.articles['originalArticle'].articleId
       store.dispatch('editArticle', articleId)
     })
 
-    const { meta, errors, handleSubmit, isSubmitting } = useForm({
+    const { errors, handleSubmit, isSubmitting } = useForm({
       validationSchema: postEntrySchema,
       initialValues: {
         title: '',
         content: '',
       },
     })
-    console.log(meta.value)
 
     const { handleChange: titleHandle } = useField('title')
     const { handleChange: contentHandle } = useField('content')
 
     return {
-      title: computed(() => store.state.auth['originalArticle'].title),
-      content: computed(() => store.state.auth['originalArticle'].content),
+      title: computed(() => store.state.articles['originalArticle'].title),
+      content: computed(() => store.state.articles['originalArticle'].content),
       errors,
       isSubmitting,
       titleHandle,

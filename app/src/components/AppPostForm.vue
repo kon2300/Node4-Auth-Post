@@ -69,9 +69,10 @@ export default {
       isSubmitting,
       titleHandle,
       contentHandle,
-      postArticle: handleSubmit((postData) =>
+      postArticle: handleSubmit((postData) => {
+        postData['user_id'] = store.state.auth['user'].userid
         store.dispatch('postArticle', postData)
-      ),
+      }),
       error: computed(() => store.state.auth['error']),
     }
   },

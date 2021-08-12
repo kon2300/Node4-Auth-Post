@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-router.use('/api', require('./apiRoutes'))
+router.use('/auth', require('./authRoutes'))
+router.use('/articles', require('./articlesRoutes'))
 
 module.exports = router
