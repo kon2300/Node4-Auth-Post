@@ -4,12 +4,19 @@ const articlesController = require('../controllers/articlesController')
 
 router.post('/postArticle', articlesController.postArticle)
 
-router.post('/editArticle/:articleId', articlesController.editArticle)
+router.get('/editArticle/:articleId', articlesController.editArticle)
 
 router.put('/updateArticle/:articleId', articlesController.updateArticle)
 
 router.get('/showArticles', articlesController.showArticles)
 
 router.delete('/removeArticle/:articleId', articlesController.removeArticle)
+
+router.post('/likeArticle/:articleId/:userId', articlesController.likeArticle)
+
+router.delete(
+  '/removeLikeArticle/:articleId/:userId',
+  articlesController.removeLikeArticle
+)
 
 module.exports = router

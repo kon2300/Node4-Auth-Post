@@ -24,29 +24,53 @@
                 </div>
               </div>
               <nav class="level is-mobile">
-                <div class="level-left">
-                  <a class="level-item" aria-label="like">
+                <div
+                  v-if="!article.like.length && article.User.id !== user.userid"
+                  class="level-left"
+                >
+                  <a
+                    class="level-item"
+                    aria-label="like"
+                    @click="likeArticle(article.id, user.userid)"
+                  >
                     <span class="icon is-small">
                       <fa :icon="['far', 'heart']" aria-hidden="true"></fa>
                     </span>
                   </a>
                 </div>
-                <div v-if="article.User.id === user.userid">
-                  <a
-                    class="level-item"
-                    aria-label="edit"
-                    @click="postedEdit(article.id)"
-                  >
-                    <span class="icon is-small">
-                      <fa icon="edit" aria-hidden="true"></fa>
-                    </span>
-                  </a>
+                <div else>
+                  <div v-for="like in article.like" :key="like.id">
+                    <div v-if="like.id === user.userid" class="level-left">
+                      <a
+                        class="level-item"
+                        aria-label="like"
+                        @click="removeLikeArticle(article.id, user.userid)"
+                      >
+                        <span class="icon is-small">
+                          <fa :icon="['fas', 'heart']" aria-hidden="true"></fa>
+                        </span>
+                      </a>
+                    </div>
+                    <div v-else-if="like.id !== user.userid"></div>
+                  </div>
                 </div>
+
                 <div class="level-right">
                   <small> 更新日</small>
                   <time datetime="article.updatedAt">
                     {{ article.updatedAt }}
                   </time>
+                  <div v-if="article.User.id === user.userid">
+                    <a
+                      class="level-item ml-1"
+                      aria-label="edit"
+                      @click="postedEdit(article.id)"
+                    >
+                      <span class="icon is-small">
+                        <fa icon="edit" aria-hidden="true"></fa>
+                      </span>
+                    </a>
+                  </div>
                 </div>
               </nav>
             </div>
@@ -101,12 +125,16 @@ export default {
     const router = useRouter()
 
     onMounted(() => {
-      store.dispatch('showArticles')
+      store.dispatch('showArticles', store.state.auth['user'].userid)
     })
 
     return {
       allArticle: computed(() => store.state.articles['allArticle']),
       user: computed(() => store.getters['authenticated']),
+      likeArticle: (article_id, user_id) =>
+        store.dispatch('likeArticle', { article_id, user_id }),
+      removeLikeArticle: (article_id, user_id) =>
+        store.dispatch('removeLikeArticle', { article_id, user_id }),
       postedEdit: (articleId) => {
         store.commit('SET_ORIGINAL_ARTICLE', { articleId })
         router.push({

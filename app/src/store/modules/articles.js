@@ -32,10 +32,16 @@ export default {
       commit('SET_ALL_ARTICLE', res.data.articles)
     },
     editArticle: async ({ commit }, article_id) => {
-      const res = await axios.post(`articles/editArticle/${article_id}`, {
-        article_id: article_id,
-      })
+      const res = await axios.get(`articles/editArticle/${article_id}`)
       commit('SET_ORIGINAL_ARTICLE', res.data.article)
+    },
+    likeArticle: async ({ dispatch }, { article_id, user_id }) => {
+      await axios.post(`articles/likeArticle/${article_id}/${user_id}`)
+      dispatch('showArticles')
+    },
+    removeLikeArticle: async ({ dispatch }, { article_id, user_id }) => {
+      await axios.delete(`articles/removeLikeArticle/${article_id}/${user_id}`)
+      dispatch('showArticles')
     },
     removeArticle: async ({ state }) => {
       const res = await axios.delete(

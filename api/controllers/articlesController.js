@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { User, Article } = require('../models')
+const { User, Article, Like } = require('../models')
 
 module.exports = {
   postArticle: async (req, res) => {
@@ -43,9 +43,14 @@ module.exports = {
           model: User,
           attributes: ['id', 'name'],
         },
+        {
+          model: User,
+          as: 'like',
+          attributes: ['id'],
+        },
       ],
       order: [['updatedAt', 'DESC']],
-      attributes: ['id', 'title', 'content', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'title', 'content', 'updatedAt'],
     })
       .then((articles) => {
         res.json({ articles })
@@ -61,6 +66,30 @@ module.exports = {
       })
       .catch((error) => {
         res.json({ removeArticleError: error })
+      })
+  },
+  likeArticle: async (req, res) => {
+    await Like.findOrCreate({
+      where: { article_id: req.params.articleId, user_id: req.params.userId },
+      article_id: req.params.articleId,
+      user_id: req.params.userId,
+    })
+      .then((like) => {
+        res.json({ like })
+      })
+      .catch((error) => {
+        res.json({ likeArticleError: error })
+      })
+  },
+  removeLikeArticle: async (req, res) => {
+    await Like.destroy({
+      where: { article_id: req.params.articleId, user_id: req.params.userId },
+    })
+      .then((like) => {
+        res.json({ success: like })
+      })
+      .catch((error) => {
+        res.json({ removeLikeArticleError: error })
       })
   },
 }

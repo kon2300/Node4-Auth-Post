@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       Article.belongsTo(models.User, {
         foreignKey: 'user_id',
       })
+      Article.belongsToMany(models.User, {
+        through: models.Like,
+        foreignKey: 'article_id',
+        otherKey: 'user_id',
+        as: 'like',
+      })
     }
   }
   Article.init(
