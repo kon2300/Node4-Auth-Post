@@ -40,7 +40,7 @@
 1. sequelize を使用しマイグレーションします
 
    ```sh
-   $ sequelize db:migrate
+   $ npx sequelize-cli db:migrate
    ```
 
 ## Author

@@ -15,10 +15,10 @@ require('@/assets/main.scss')
 
 axios.defaults.baseURL = 'http://localhost:3000'
 
-store.dispatch('attempt', localStorage.getItem('token'))
-
-createApp(App)
-  .use(store)
-  .use(router)
-  .component('fa', FontAwesomeIcon)
-  .mount('#app')
+store.dispatch('attempt', localStorage.getItem('token')).then(() => {
+  createApp(App)
+    .use(store)
+    .use(router)
+    .component('fa', FontAwesomeIcon)
+    .mount('#app')
+})
