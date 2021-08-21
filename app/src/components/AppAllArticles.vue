@@ -24,8 +24,39 @@
                 </div>
               </div>
               <nav class="level is-mobile">
+                <div v-if="article.User.id === user.userid">
+                  <a class="level-item" aria-label="like">
+                    <span class="icon is-small">
+                      <fa :icon="['fas', 'heart']" aria-hidden="true"></fa>
+                    </span>
+                    <p>{{ Object.keys(article.like).length }}</p>
+                  </a>
+                </div>
+
                 <div
-                  v-if="!article.like.length && article.User.id !== user.userid"
+                  v-show="
+                    article.User.id !== user.userid &&
+                    checkLikeArticle(article.like, user.userid)
+                  "
+                  class="level-left"
+                >
+                  <a
+                    class="level-item"
+                    aria-label="like"
+                    @click="removeLikeArticle(article.id, user.userid)"
+                  >
+                    <span class="icon is-small">
+                      <fa :icon="['fas', 'heart']" aria-hidden="true"></fa>
+                    </span>
+                    <p>{{ Object.keys(article.like).length }}</p>
+                  </a>
+                </div>
+
+                <div
+                  v-show="
+                    article.User.id !== user.userid &&
+                    !checkLikeArticle(article.like, user.userid)
+                  "
                   class="level-left"
                 >
                   <a
@@ -36,23 +67,8 @@
                     <span class="icon is-small">
                       <fa :icon="['far', 'heart']" aria-hidden="true"></fa>
                     </span>
+                    <p>{{ Object.keys(article.like).length }}</p>
                   </a>
-                </div>
-                <div else>
-                  <div v-for="like in article.like" :key="like.id">
-                    <div v-if="like.id === user.userid" class="level-left">
-                      <a
-                        class="level-item"
-                        aria-label="like"
-                        @click="removeLikeArticle(article.id, user.userid)"
-                      >
-                        <span class="icon is-small">
-                          <fa :icon="['fas', 'heart']" aria-hidden="true"></fa>
-                        </span>
-                      </a>
-                    </div>
-                    <div v-else-if="like.id !== user.userid"></div>
-                  </div>
                 </div>
 
                 <div class="level-right">
@@ -95,17 +111,25 @@
                 <img alt="Vue logo" src="@/assets/logo.png" />
               </figure>
             </div>
-            <div class="media-content">
-              <div class="content">
-                <div>
-                  <strong>{{ article.User.name }}</strong>
-                  <small>@{{ article.User.id }}</small>
-                  <br />
-                  <p>[TITLE]{{ article.title }}</p>
-                  <p>[CONTENT]{{ article.content }}</p>
-                </div>
+            <div class="content">
+              <div>
+                <strong>{{ article.User.name }}</strong>
+                <small>@{{ article.User.id }}</small>
+                <br />
+                <p><strong>- タイトル -</strong></p>
+                <p>{{ article.title }}</p>
+                <p><strong>- 内容 -</strong></p>
+                <p>{{ article.content }}</p>
               </div>
             </div>
+            <nav class="level is-mobile">
+              <a class="level-item" aria-label="like">
+                <span class="icon is-small">
+                  <fa :icon="['fas', 'heart']" aria-hidden="true"></fa>
+                </span>
+                <p>{{ Object.keys(article.like).length }}</p>
+              </a>
+            </nav>
           </article>
         </div>
       </div>
@@ -125,12 +149,16 @@ export default {
     const router = useRouter()
 
     onMounted(() => {
-      store.dispatch('showArticles', store.state.auth['user'].userid)
+      store.dispatch('showArticles')
     })
 
     return {
       allArticle: computed(() => store.state.articles['allArticle']),
       user: computed(() => store.getters['authenticated']),
+      checkLikeArticle: (article, user_id) =>
+        article.some((like) => {
+          return like.id === user_id
+        }),
       likeArticle: (article_id, user_id) =>
         store.dispatch('likeArticle', { article_id, user_id }),
       removeLikeArticle: (article_id, user_id) =>

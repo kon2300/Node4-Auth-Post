@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { User, Article, Like } = require('../models')
 
 module.exports = {
@@ -8,8 +7,8 @@ module.exports = {
       content: req.body.content,
       user_id: req.body.user_id,
     })
-      .then((user) => {
-        res.json({ user })
+      .then((article) => {
+        res.json({ article })
       })
       .catch((error) => {
         res.json({ postArticleError: error })
@@ -47,6 +46,9 @@ module.exports = {
           model: User,
           as: 'like',
           attributes: ['id'],
+          through: {
+            attributes: [],
+          },
         },
       ],
       order: [['updatedAt', 'DESC']],

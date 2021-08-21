@@ -13,10 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id',
       })
       User.belongsToMany(models.Article, {
+        as: 'like',
         through: models.Like,
         foreignKey: 'user_id',
-        otherKey: 'article_id',
-        as: 'like',
       })
     }
   }
