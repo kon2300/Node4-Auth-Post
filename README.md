@@ -1,4 +1,4 @@
-# NodeSub-Node-Db-Auth
+# Node4-Node-Db-Auth
 
 - 勉強用の課題です
 
@@ -40,7 +40,7 @@
 1. sequelize を使用しマイグレーションします
 
    ```sh
-   $ sequelize db:migrate
+   $ npx sequelize-cli db:migrate
    ```
 
 ## Author
